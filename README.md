@@ -1,26 +1,13 @@
-The AT Firmware provides an AT interface to the Multitech LoRaWAN stack
+Multitech AT Firmware version 4.1.5, compile with libmdot 4.1.18 and mbed-os 6.8
 
-Dot libraries
-------------------
+Can be compiled using ARM compiler through Mbed Studio on a local machine, with mDot as target device. 
 
-Include one of the following libraries to complete this project.
-  * [libmDot-mbed5](http://github.com/MultiTechSystems/libmDot-mbed5/) -> production-ready build for mDot
-  * [libmDot-dev-mbed5](http://github.com/MultiTechSystems/libmDot-dev-mbed5/) -> development build for mDot
-  * [libxDot-mbed5](http://github.com/MultiTechSystems/libxDot-mbed5/) -> production-ready build for xDot
-  * [libxDot-dev-mbed5](http://github.com/MultiTechSystems/libxDot-dev-mbed5/) -> development build for xDot
+GCC 9 also works: https://developer.arm.com/downloads/-/gnu-rm
 
-A changelog for the Dot library can be found [here](https://developer.mbed.org/teams/MultiTech/wiki/Dot-library-change-log).
+https://developer.arm.com/-/media/Files/downloads/gnu-rm/9-2020q2/gcc-arm-none-eabi-9-2020-q2-update-x86_64-linux.tar.bz2?revision=05382cca-1721-44e1-ae19-1e7c3dc96118&rev=05382cca172144e1ae191e7c3dc96118&hash=FDE675133A099796BD1507A3FF215AC4
 
+https://os.mbed.com/docs/mbed-studio/current/installing/switching-to-gcc.html
 
+Fails to compile in Keil Studio online editor and needs cmake configuration to compile with mbed-tools workflow.
 
-Firmware update over the air
-------------------------------
-FOTA support can be compiled into this application by adding "FOTA=1" to the macros array in the mbed_app.json file.
-FOTA is only supported on the mDot platform, xDot does not have an external flash for supporting FOTA.
-
-{
-    "macros": [
-        "FOTA=1"
-    ]
-}
-        
+Mbed Studio will not be available after July 2026, so we need to sort out the mbed CLI build process before then.
