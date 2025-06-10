@@ -15,7 +15,7 @@ uint32_t CmdWittyPiSwitch::action(std::vector<std::string> args)
         //while(1) {
             CommandTerminal::Serial()->writef("Set Pin HIGH");
             pin = 1;
-            wait(0.5);
+            wait_us(0.5);
             pin = 0;
             //wait(1);
         //}
