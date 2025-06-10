@@ -2,3 +2,4 @@ BUILD
 .mbed
 mbed-os
 libmdot-dev
+.DS_Store
