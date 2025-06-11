@@ -11,8 +11,8 @@ class CmdWittyPiSwitch : public Command {
 public:
 
     CmdWittyPiSwitch();
-    static uint32_t action(std::vector<std::string> args);
-    static bool verify(std::vector<std::string> args);
+    virtual uint32_t action(const std::vector<std::string>& args);
+    virtual bool verify(const std::vector<std::string>& args);
     
 private:   
     

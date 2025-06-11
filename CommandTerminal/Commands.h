@@ -104,6 +104,9 @@
 #include "CmdTxFrequency.h"
 #include "CmdDutyCycle.h"
 
+// SU-WaterCam trigger WittyPi switch
+#include "CmdWittyPiSwitch.h"
+
 #if MTS_CMD_TERM_TEST_COMMANDS
 #include "CmdRxDataRate.h"
 #include "CmdSendStringOnInterval.h"

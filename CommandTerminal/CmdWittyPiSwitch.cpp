@@ -1,13 +1,13 @@
 #include "CmdWittyPiSwitch.h"
-#include "mbed.h"
+// #include "mbed.h"
 
 CmdWittyPiSwitch::CmdWittyPiSwitch() :
- Command("WittyPi Wake Signal", "AT+WPWS", "Set GPIO pin high", "wittypi")
+ Command("WittyPi Wake Signal", "AT+WPS", "Set GPIO pin high", "wittypi")
 {
     _queryable = true;
 }
 
-uint32_t CmdWittyPiSwitch::action(std::vector<std::string> args)
+uint32_t CmdWittyPiSwitch::action(const std::vector<std::string>& args)
 {
     DigitalOut pin(PB_1);
     if (args.size() == 1)
@@ -24,7 +24,7 @@ uint32_t CmdWittyPiSwitch::action(std::vector<std::string> args)
     return 0;
 }
 
-bool CmdWittyPiSwitch::verify(std::vector<std::string> args)
+bool CmdWittyPiSwitch::verify(const std::vector<std::string>& args)
 {
     if (args.size() == 1)
         return true;

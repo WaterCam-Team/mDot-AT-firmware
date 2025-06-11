@@ -103,6 +103,7 @@ public:
         eLBTRSSI,
         eBAT,
         eATWP,
+        eWPS, // SU-WaterCam WittyPi Switch
 #if defined(TARGET_MTS_MDOT_F411RE)
         eREPAIR,
         eWOTP,

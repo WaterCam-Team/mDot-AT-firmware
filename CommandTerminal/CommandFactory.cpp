@@ -189,6 +189,11 @@ Command* CommandFactory::Create(CmdId_t cmd)
         return new CmdBatteryLevel();
     case eATWP:
         return new CMD_DUMMY("Write Protected Config", "AT&WP", "Write protected config to flash (DevEUI, AppEUI, AppKey, Frequency Band)", "NONE");
+
+    // SU-WaterCam WittyPi Switch
+    case eWPS:
+        return new CmdWittyPiSwitch();
+    
 #if defined(TARGET_MTS_MDOT_F411RE)
     case eREPAIR:
         return new CmdRepairFlash();
