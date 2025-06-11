@@ -104,6 +104,7 @@ public:
         eBAT,
         eATWP,
         eWPS, // SU-WaterCam WittyPi Switch
+        eHEART, // SU-WaterCam Heartbeat function 
 #if defined(TARGET_MTS_MDOT_F411RE)
         eREPAIR,
         eWOTP,

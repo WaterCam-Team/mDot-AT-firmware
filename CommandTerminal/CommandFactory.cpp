@@ -193,6 +193,8 @@ Command* CommandFactory::Create(CmdId_t cmd)
     // SU-WaterCam WittyPi Switch
     case eWPS:
         return new CmdWittyPiSwitch();
+    case eHEART:
+        return new CmdHeartbeat();
     
 #if defined(TARGET_MTS_MDOT_F411RE)
     case eREPAIR:

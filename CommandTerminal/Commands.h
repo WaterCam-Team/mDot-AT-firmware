@@ -106,6 +106,7 @@
 
 // SU-WaterCam trigger WittyPi switch
 #include "CmdWittyPiSwitch.h"
+#include "CmdHeartbeat.h"
 
 #if MTS_CMD_TERM_TEST_COMMANDS
 #include "CmdRxDataRate.h"

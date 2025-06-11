@@ -23,3 +23,5 @@ Running 'hg summary' should return "parent: 35:e17e00b8e022"
 Load this workspace into Mbed Studio, add libmdot (https://github.com/MultiTechSystems/libmDot) and mbed-os (https://github.com/ARMmbed/mbed-os) to the Libraries section. Select libmdot 4.1.33 and mbed-os 6.8.0, and compile for the mDot (MTS_MDOT_F411RE) target.
 
 The compiled Dot-AT-Firmware.bin file should be within the build directory.
+
+The mDot must be configured on the gateway for class C operation.
