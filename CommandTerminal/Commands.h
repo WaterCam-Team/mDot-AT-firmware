@@ -129,4 +129,7 @@
 #include "CmdRtc.h"
 #endif
 
+// SU-WaterCam commands
+#include "CmdClassCPacketProcessor.h"
+
 #endif // __COMMANDS_H__

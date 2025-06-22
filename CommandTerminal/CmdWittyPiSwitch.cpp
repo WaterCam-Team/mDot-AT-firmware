@@ -1,5 +1,4 @@
 #include "CmdWittyPiSwitch.h"
-// #include "mbed.h"
 
 CmdWittyPiSwitch::CmdWittyPiSwitch() :
  Command("WittyPi Wake Signal", "AT+WPS", "Set GPIO pin high", "wittypi")
@@ -12,13 +11,10 @@ uint32_t CmdWittyPiSwitch::action(const std::vector<std::string>& args)
     DigitalOut pin(PB_1);
     if (args.size() == 1)
     {
-        //while(1) {
-            CommandTerminal::Serial()->writef("Set Pin HIGH");
-            pin = 1;
-            wait_us(0.5);
-            pin = 0;
-            //wait(1);
-        //}
+        CommandTerminal::Serial()->writef("Set Pin HIGH");
+        pin = 1;
+        ThisThread::sleep_for(500ms);
+        pin = 0;
     }
 
     return 0;

@@ -195,7 +195,8 @@ Command* CommandFactory::Create(CmdId_t cmd)
         return new CmdWittyPiSwitch();
     case eHEART:
         return new CmdHeartbeat();
-    
+    case eCPROC:
+        return new CmdClassCPacketProcessor();
 #if defined(TARGET_MTS_MDOT_F411RE)
     case eREPAIR:
         return new CmdRepairFlash();

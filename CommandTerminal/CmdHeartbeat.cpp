@@ -13,6 +13,7 @@ uint32_t CmdHeartbeat::action(const std::vector<std::string>& args) {
     int interval;
     std::string text;
     DigitalOut pin(PB_1);
+    DigitalIn piState(PC_1);
 
     sscanf(args[1].c_str(), "%d", &interval);
 
@@ -69,14 +70,14 @@ uint32_t CmdHeartbeat::action(const std::vector<std::string>& args) {
                         if (CommandTerminal::Dot()->getRxOutput() == mDot::HEXADECIMAL) {
                             for (size_t i = 0; i < data.size(); i++) {
                                 CommandTerminal::Serial()->writef("%02x", data[i]);
-                            }
+                            }                        
                             CommandTerminal::Serial()->writef("\r\n");
                             // CHECK IF WAKE SIGNAL hex !
                             if (data[0] == 21) {
                                 CommandTerminal::Serial()->writef("hex ! received");
                                 CommandTerminal::Serial()->writef("Set Pin HIGH!!!");
                                 pin = 1;
-                                wait_us(0.5);
+                                ThisThread::sleep_for(5s);
                                 pin = 0;
                             }
                         } else {
@@ -85,7 +86,8 @@ uint32_t CmdHeartbeat::action(const std::vector<std::string>& args) {
                                 CommandTerminal::Serial()->writef("! signal received!");
                                 CommandTerminal::Serial()->writef("Set Pin HIGH!!!");
                                 pin = 1;
-                                wait_us(0.5);
+                                //wait_us(0.5);
+                                ThisThread::sleep_for(5s);
                                 pin = 0;
                             }
                         }

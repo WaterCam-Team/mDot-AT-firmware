@@ -7,10 +7,16 @@
 #include <cstdarg>
 #include <deque>
 #include "mts_at_version.h"
+#include "CmdClassCPacketProcessor.h"
 
 #if defined(TARGET_XDOT_L151CC)
 #include "xdot_low_power.h"
 #endif
+
+// Function to process Class C packets
+void processClassCPacket(uint8_t port, uint8_t *payload, uint16_t size) {
+    CmdClassCPacketProcessor::processIncomingPacket(port, payload, size);
+}
 
 #if defined(TARGET_MTS_MDOT_F411RE)
 const char CommandTerminal::banner[] = "\r\n\nMultiTech Systems LoRa XBee Module\r\n\n";
@@ -33,7 +39,7 @@ const char CommandTerminal::done[] = "\r\nOK\r\n";
 const char CommandTerminal::error[] = "\r\nERROR\r\n";
 
 // Escape sequence...
-const char CommandTerminal::escape_sequence[] = "+++";
+const char CommandTerminal::escape_sequence[] = "++";
 
 mts::ATSerial* CommandTerminal::_serialp = NULL;
 mDot* CommandTerminal::_dot = NULL;
@@ -1346,6 +1352,12 @@ void CommandTerminal::RadioEvent::PacketRx(uint8_t port, uint8_t *payload, uint1
     mDotEvent::PacketRx(port, payload, size, rssi, snr, ctrl, slot, retries, address, fcnt, dupRx);
     _rxAddress = address;
     _rxFcnt = fcnt;
+
+    // Process Class C packets with emergency handling and serial forwarding
+    if (CommandTerminal::Dot()->getClass() == "C") {
+        // Forward to Class C packet processor
+        processClassCPacket(port, payload, size);
+    }
 
     if(port == 200 || port == 201 || port == 202) {
         Fota::getInstance()->processCmd(payload, port, size);
