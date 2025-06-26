@@ -16,6 +16,9 @@ public:
     // Static method to process incoming packets
     static void processIncomingPacket(uint8_t port, uint8_t *payload, uint16_t size);
     
+    // Static method to configure emergency input pin
+    static void configureEmergencyPin();
+    
 private:
     static bool isEmergencyPacket(uint8_t *payload, uint16_t size);
     static void handleEmergencyPacket();
