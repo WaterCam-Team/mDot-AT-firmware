@@ -1,5 +1,6 @@
 #include "CmdJoinRequest.h"
 #include "CommandTerminal.h"
+#include "CmdClassCPacketProcessor.h"
 
 CmdJoinRequest::CmdJoinRequest() :
 #if MTS_CMD_TERM_VERBOSE
@@ -34,6 +35,7 @@ uint32_t CmdJoinRequest::action(const std::vector<std::string>& args) {
 
     if (code == mDot::MDOT_OK) {
         CommandTerminal::Serial()->writef("Successfully joined network\r\n");
+        CmdClassCPacketProcessor::sendStatusPacketIfNeeded();
         //CommandTerminal::Serial()->attach();
         return 0;
     } else {

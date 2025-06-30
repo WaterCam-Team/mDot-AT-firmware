@@ -19,6 +19,12 @@ public:
     // Static method to configure emergency input pin
     static void configureEmergencyPin();
     
+    // Static method for startup initialization
+    static void startupInit();
+    
+    // Static method to send status packet if needed
+    static void sendStatusPacketIfNeeded();
+    
 private:
     static bool isEmergencyPacket(uint8_t *payload, uint16_t size);
     static void handleEmergencyPacket();

@@ -4,6 +4,7 @@
 #include <string>
 #include <algorithm>
 #include "stm32f4xx_hal.h"  // For HAL GPIO functions
+#include "MTSText.h"  // For bin2hexString function
 
 // Static member initialization
 bool CmdClassCPacketProcessor::_enabled = false;
@@ -289,4 +290,49 @@ void CmdClassCPacketProcessor::configureEmergencyPin() {
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1, GPIO_PIN_RESET);
     
     CommandTerminal::Serial()->writef("PB_1 configured as digital output. Starting LOW\r\n");
+}
+
+void CmdClassCPacketProcessor::startupInit() {
+    // Set CPROC=1 (enable Class C packet processor)
+    _enabled = true;
+    CommandTerminal::Serial()->writef("Class C packet processor enabled on startup\r\n");
+    
+    // Configure emergency pins
+    configureEmergencyPin();
+    
+    // Set device to Class C mode if not already
+    if (CommandTerminal::Dot()->getClass() != "C") {
+        CommandTerminal::Dot()->setClass("C");
+        CommandTerminal::Serial()->writef("Device set to Class C mode\r\n");
+    }
+    
+    // Open continuous receive window
+    CommandTerminal::Dot()->openRxWindow(0);
+    CommandTerminal::Serial()->writef("Continuous receive window opened\r\n");
+    
+    // Wait a moment for the device to stabilize
+    ThisThread::sleep_for(1000ms);
+}
+
+void CmdClassCPacketProcessor::sendStatusPacketIfNeeded() {
+    if (!_enabled) return;
+    if (!CommandTerminal::Dot()->getNetworkJoinStatus()) return;
+    // Create status packet with device information
+    std::string statusMsg = "STATUS:CPROC=1,CLASS=C,READY=1";
+    // Add device ID if available
+    std::vector<uint8_t> deviceIdVec = CommandTerminal::Dot()->getDeviceId();
+    if (!deviceIdVec.empty()) {
+        std::string deviceIdHex = mts::Text::bin2hexString(deviceIdVec, "");
+        statusMsg += ",DEVICE=" + deviceIdHex;
+    }
+    // Add network status
+    statusMsg += ",NETWORK=JOINED";
+    // Convert to vector for sending
+    std::vector<uint8_t> statusData(statusMsg.begin(), statusMsg.end());
+    // Send the status packet
+    if (CommandTerminal::Dot()->send(statusData, false) == mDot::MDOT_OK) {
+        CommandTerminal::Serial()->writef("Status packet sent to gateway: %s\r\n", statusMsg.c_str());
+    } else {
+        CommandTerminal::Serial()->writef("Failed to send status packet: %s\r\n", CommandTerminal::Dot()->getLastError().c_str());
+    }
 } 

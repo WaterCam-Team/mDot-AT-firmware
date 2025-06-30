@@ -390,6 +390,7 @@ bool CommandTerminal::autoJoinCheck() {
                 write(done);
             }
             logInfo("Network Joined");
+            CmdClassCPacketProcessor::sendStatusPacketIfNeeded();
             return false;
         }
 
@@ -550,6 +551,10 @@ void CommandTerminal::start() {
     } else {
         peer_to_peer = false;
     }
+    
+    // Initialize Class C packet processor on startup
+    CmdClassCPacketProcessor::startupInit();
+    
     //Run terminal session
     while (running) {
 
