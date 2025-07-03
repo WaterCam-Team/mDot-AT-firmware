@@ -161,17 +161,17 @@ void CmdClassCPacketProcessor::processIncomingPacket(uint8_t port, uint8_t *payl
 }
 
 bool CmdClassCPacketProcessor::isEmergencyPacket(uint8_t *payload, uint16_t size) {
-    if (size < 9) { // "emergency" is 9 characters
+    if (size > 1) { // using "!" or hex 21 for emergency signal
         return false;
     }
     
     // Convert payload to string for comparison
     std::string packetStr(reinterpret_cast<char*>(payload), size);
     
-    // Check if packet contains "emergency" (case-insensitive)
+    // Check if packet is "!"
     std::transform(packetStr.begin(), packetStr.end(), packetStr.begin(), ::tolower);
     
-    return packetStr.find("emergency") != std::string::npos;
+    return packetStr.compare("!") != std::string::npos;
 }
 
 void CmdClassCPacketProcessor::handleEmergencyPacket() {
@@ -228,6 +228,23 @@ void CmdClassCPacketProcessor::handleEmergencyPacket() {
     } else {
         // PA_6 is HIGH, RPi is ON, no action needed
         CommandTerminal::Serial()->writef("EMERGENCY: Input pin HIGH, no action taken\r\n");
+    }
+    
+    // Send confirmation message to gateway
+    sendEmergencyConfirmation();
+}
+
+void CmdClassCPacketProcessor::sendEmergencyConfirmation() {
+    if (!_enabled) return;
+    if (!CommandTerminal::Dot()->getNetworkJoinStatus()) return;
+    int inState = _emergencyInputPin.read();
+    int outState = _emergencyOutputPin.read();
+    std::string msg = "EMERGENCY_ACK:IN=" + std::to_string(inState) + ",OUT=" + std::to_string(outState);
+    std::vector<uint8_t> data(msg.begin(), msg.end());
+    if (CommandTerminal::Dot()->send(data, false) == mDot::MDOT_OK) {
+        CommandTerminal::Serial()->writef("Emergency confirmation sent to gateway: %s\r\n", msg.c_str());
+    } else {
+        CommandTerminal::Serial()->writef("Failed to send emergency confirmation: %s\r\n", CommandTerminal::Dot()->getLastError().c_str());
     }
 }
 
@@ -329,6 +346,8 @@ void CmdClassCPacketProcessor::sendStatusPacketIfNeeded() {
     statusMsg += ",NETWORK=JOINED";
     // Convert to vector for sending
     std::vector<uint8_t> statusData(statusMsg.begin(), statusMsg.end());
+    // delay 1 second
+    ThisThread::sleep_for(1000ms);
     // Send the status packet
     if (CommandTerminal::Dot()->send(statusData, false) == mDot::MDOT_OK) {
         CommandTerminal::Serial()->writef("Status packet sent to gateway: %s\r\n", statusMsg.c_str());

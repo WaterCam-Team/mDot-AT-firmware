@@ -29,6 +29,7 @@ private:
     static bool isEmergencyPacket(uint8_t *payload, uint16_t size);
     static void handleEmergencyPacket();
     static void forwardPacketToSerial(uint8_t port, uint8_t *payload, uint16_t size);
+    static void sendEmergencyConfirmation();
     
     static bool _enabled;
     static DigitalIn _emergencyInputPin;
