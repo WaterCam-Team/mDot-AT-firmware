@@ -22,6 +22,36 @@ Running 'hg summary' should return "parent: 35:e17e00b8e022"
 
 Load this workspace into Mbed Studio, add libmdot (https://github.com/MultiTechSystems/libmDot) and mbed-os (https://github.com/ARMmbed/mbed-os) to the Libraries section. Select libmdot 4.1.33 and mbed-os 6.8.0, and compile for the mDot (MTS_MDOT_F411RE) target.
 
-The compiled Dot-AT-Firmware.bin file should be within the build directory.
+The compiled Dot-AT-Firmware.bin file should be within the build directory. It can be flashed onto a mDot that has programming headers installed using the USB devkit.
 
-The mDot must be configured on the gateway for class C operation.
+The mDot must be configured on the gateway for class C operation to function.
+
+YMODEM TRANSFER: if the mDot does not have programming headers installed you can still flash firmware using ymodem transfer. The ymodem.bin file is already set up for this.
+
+If building a new firmware release: with a current bootloader on the mDot you need to add a CRC to the _application.bin firmware file created during compilation. Do this with the python mtsmultitool package:
+
+`pip install mtsmultitool`
+
+then: `multitool device crc -o output.bin mDot-AT-firmware_application.bin`
+
+Now 'output.bin' is the file you want to transfer to the mDot.
+
+Use the tio program. Run it in the directory your firmware file is in.
+
+Connect USB UART adapter to mDot: power to VOD pin 1, ground to GND pin 10, white RX to USBTX pin 31, green TX to USBRX pin 30.
+
+`tio /dev/ttyUSB0` or other device
+
+To enter the bootloader you might need to hold down a key and reset the power on the mDot
+
+Once the 'bootloader :>' prompt appears, type `transfer ymodem` and hit enter to tell the mDot you will start the transfer. 
+
+ctrl-t y will tell tio you want to use ymodem transfer.
+
+Enter the name of the file you want to transfer, in this example 'output.bin', and hit enter.
+
+Tio will display dots to show the transfer progress and will print 'Done' once completed.
+
+Now you can actually flash this firmware by entering `flash`. This will take a minute and once done it will restore the gen app key from OTP backup.
+
+Disconnect from the USB debug and connect to the normal UART on the mDot, pins 2 and 3. Test and configure the firmware as usual.
