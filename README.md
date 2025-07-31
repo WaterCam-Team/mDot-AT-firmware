@@ -26,6 +26,8 @@ The compiled Dot-AT-Firmware.bin file should be within the build directory. It c
 
 The mDot must be configured on the gateway for class C operation to function.
 
+See pdf for Multitech docs.
+
 YMODEM TRANSFER: if the mDot does not have programming headers installed you can still flash firmware using ymodem transfer. The ymodem.bin file is already set up for this.
 
 If building a new firmware release: with a current bootloader on the mDot you need to add a CRC to the _application.bin firmware file created during compilation. Do this with the python mtsmultitool package:
@@ -55,3 +57,14 @@ Tio will display dots to show the transfer progress and will print 'Done' once c
 Now you can actually flash this firmware by entering `flash`. This will take a minute and once done it will restore the gen app key from OTP backup.
 
 Disconnect from the USB debug and connect to the normal UART on the mDot, pins 2 and 3. Test and configure the firmware as usual.
+
+ymodem related documentation:
+
+https://os.mbed.com/teams/MultiTech/wiki/updating-firmware-using-MTS-bootloader
+
+https://www.multitech.net/developer/forums/topic/flashing-firmware-compiled-using-mbed-onlineoffline-compiler-causes-crc-errors/
+
+https://github.com/MultiTechSystems/bootloaders
+
+https://pypi.org/project/mtsmultitool/
+
