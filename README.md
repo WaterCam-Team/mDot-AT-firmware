@@ -71,3 +71,5 @@ https://pypi.org/project/mtsmultitool/
 If the mDot is stuck in network join mode and failing to connect you can re-enter AT command mode by entering "+++" shortly after reseting the mDot. Alternatively enter the bootloader and erase lora.cfg 
 
 https://www.multitech.net/developer/forums/topic/mdot-at-command-program-issue/
+
+If there are issues connecting to the gateway you can try reseting the join nonces with 'at+jn=0,0' on the device and Chirpstack, or manually setting values for device address, network sesssion key, and application session key on the mDot using the Activation values in Chirpstack.
