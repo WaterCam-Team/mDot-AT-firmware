@@ -68,3 +68,6 @@ https://github.com/MultiTechSystems/bootloaders
 
 https://pypi.org/project/mtsmultitool/
 
+If the mDot is stuck in network join mode and failing to connect you can re-enter AT command mode by entering "+++" shortly after reseting the mDot. Alternatively enter the bootloader and erase lora.cfg 
+
+https://www.multitech.net/developer/forums/topic/mdot-at-command-program-issue/

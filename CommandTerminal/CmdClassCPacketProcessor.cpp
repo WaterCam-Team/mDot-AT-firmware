@@ -161,7 +161,7 @@ void CmdClassCPacketProcessor::processIncomingPacket(uint8_t port, uint8_t *payl
 }
 
 bool CmdClassCPacketProcessor::isEmergencyPacket(uint8_t *payload, uint16_t size) {
-    if (size > 1) { // using "!" or hex 21 for emergency signal
+    if (size != 1) { // using "!" or hex 21 for emergency signal
         return false;
     }
     
