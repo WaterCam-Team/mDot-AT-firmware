@@ -73,3 +73,5 @@ If the mDot is stuck in network join mode and failing to connect you can re-ente
 https://www.multitech.net/developer/forums/topic/mdot-at-command-program-issue/
 
 If there are issues connecting to the gateway you can try reseting the join nonces with 'at+jn=0,0' on the device and Chirpstack, or manually setting values for device address, network sesssion key, and application session key on the mDot using the Activation values in Chirpstack.
+
+Class C packet processor (emergency start): this firmware starts the processor on boot, puts the mDot in Class C with a continuous receive window, and, when an emergency downlink (`!`, 0x21) arrives while the Pi is off (PA_6 low), pulses PB_1 to switch it on. Commands, pins and packet formats are in [ClassC_Example_Usage.md](ClassC_Example_Usage.md). Turn it off for a session with `AT+CPROC=0`.
