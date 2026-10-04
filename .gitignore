@@ -2,3 +2,7 @@ BUILD
 .mbed
 mbed-os
 .DS_Store
+# Fetched by the mbed tools from libmdot.lib; MultiTech's library, not ours to publish
+libmdot
+# Stock MultiTech firmware images kept locally for rollback
+STOCK-*.bin
