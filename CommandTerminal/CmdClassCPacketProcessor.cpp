@@ -1,8 +1,8 @@
 #include "CmdClassCPacketProcessor.h"
+#include "EmergencyPacket.h"
 #include "CommandTerminal.h"
 #include "mbed.h"
 #include <string>
-#include <algorithm>
 #include "stm32f4xx_hal.h"  // For HAL GPIO functions
 #include "MTSText.h"  // For bin2hexString function
 
@@ -161,17 +161,10 @@ void CmdClassCPacketProcessor::processIncomingPacket(uint8_t port, uint8_t *payl
 }
 
 bool CmdClassCPacketProcessor::isEmergencyPacket(uint8_t *payload, uint16_t size) {
-    if (size != 1) { // using "!" or hex 21 for emergency signal
-        return false;
-    }
-    
-    // Convert payload to string for comparison
-    std::string packetStr(reinterpret_cast<char*>(payload), size);
-    
-    // Check if packet is "!"
-    std::transform(packetStr.begin(), packetStr.end(), packetStr.begin(), ::tolower);
-    
-    return packetStr.compare("!") != std::string::npos;
+    // Only the exact one-byte message '!' (0x21). The old check compared
+    // std::string::compare()'s result against npos, which is always true, so
+    // any one-byte downlink counted as an emergency.
+    return is_emergency_payload(payload, size);
 }
 
 void CmdClassCPacketProcessor::handleEmergencyPacket() {
